@@ -52,14 +52,19 @@ extension ArticlesController {
         let articles = edition
             .flatMap(to: [Article].self) {
                 try $0.articles.query(on: req)
-                    .sort(\.title)
                     .all()
         }
         
         return edition
             .and(articles)
             .map(to: EditionDetailsOutput.self) { edition, articles in
-                return EditionDetailsOutput(edition: edition, articles: articles)
+                let sortedArticles = articles.sorted(by: { (left, right) -> Bool in
+                    let leftFlatTags = left.tags.joined()
+                    let rightFlatTags = right.tags.joined()
+                    return leftFlatTags < rightFlatTags || (leftFlatTags == rightFlatTags && left.title < right.title)
+                })
+                
+                return EditionDetailsOutput(edition: edition, articles: sortedArticles)
         }
     }
     
