@@ -32,7 +32,17 @@ final class Article {
 }
 
 // MARK: - MySQLModel
-extension Article: MySQLModel {}
+extension Article: MySQLModel {
+    func willCreate(on conn: MySQLConnection) throws -> EventLoopFuture<Article> {
+        tags = Tags.allowedTags(from: tags, of: .article)
+        return Future.map(on: conn) { self }
+    }
+    
+    func willUpdate(on conn: MySQLConnection) throws -> EventLoopFuture<Article> {
+        tags = Tags.allowedTags(from: tags, of: .article)
+        return Future.map(on: conn) { self }
+    }
+}
 
 // MARK: - Content
 extension Article: Content {}

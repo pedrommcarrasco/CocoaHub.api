@@ -18,23 +18,18 @@ enum TagType {
 struct Tags {
     
     static func allowedTags(from tags: [String], of type: TagType) -> [String] {
-        switch type {
-        case .event:
-            return tags.compactMap {
-                guard let event = Event(rawValue: $0) else { return nil }
-                return event.rawValue
+        return tags
+            .compactMap {
+                switch type {
+                case .event:
+                    return Event(rawValue: $0)?.rawValue
+                case .new:
+                    return New(rawValue: $0)?.rawValue
+                case .article:
+                    return Article(rawValue: $0)?.rawValue
+                }
             }
-        case .new:
-            return tags.compactMap {
-                guard let new = New(rawValue: $0) else { return nil }
-                return new.rawValue
-            }
-        case .article:
-            return tags.compactMap {
-                guard let article = Article(rawValue: $0) else { return nil }
-                return article.rawValue
-            }
-        }
+            .sorted()
     }
 }
 
