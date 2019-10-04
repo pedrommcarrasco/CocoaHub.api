@@ -23,7 +23,7 @@ final class Article {
     // MARK: Init
     init(title: String, tags: [String], url: String, author: Person, curator: Person, edition: ArticlesEdition.ID) {
         self.title = title
-        self.tags = Tags.allowedTags(from: tags, of: .article)
+        self.tags = tags
         self.url = url
         self.edition = edition
         self.author = author

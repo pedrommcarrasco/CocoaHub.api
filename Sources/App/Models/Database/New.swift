@@ -27,13 +27,14 @@ final class New {
         self.description = description
         self.date = date
         self.url = url
-        self.tags = Tags.allowedTags(from: tags, of: .new)
+        self.tags = tags
         self.curator = curator
     }
 }
 
 // MARK: - MySQLModel
 extension New: MySQLModel {
+    
     func willCreate(on conn: MySQLConnection) throws -> EventLoopFuture<New> {
         tags = Tags.allowedTags(from: tags, of: .new)
         return Future.map(on: conn) { self }

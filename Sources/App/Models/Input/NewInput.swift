@@ -24,7 +24,7 @@ final class NewInput {
         self.title = title
         self.description = description
         self.url = url
-        self.tags = Tags.allowedTags(from: tags, of: .new)
+        self.tags = tags
         self.curator = curator
     }
 }

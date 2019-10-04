@@ -27,7 +27,7 @@ final class Event {
     init(name: String, logo: String, tags: [String], url: String, country: String, city: String, startDate: Date, endDate: Date) {
         self.name = name
         self.logo = logo
-        self.tags = Tags.allowedTags(from: tags, of: .event)
+        self.tags = tags
         self.url = url
         self.country = country
         self.city = city
@@ -38,6 +38,7 @@ final class Event {
 
 // MARK: - MySQLModel
 extension Event: MySQLModel {
+    
     func willCreate(on conn: MySQLConnection) throws -> EventLoopFuture<Event> {
         tags = Tags.allowedTags(from: tags, of: .event)
         return Future.map(on: conn) { self }
