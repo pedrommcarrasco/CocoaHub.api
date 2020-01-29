@@ -20,17 +20,28 @@ final class Event {
     var url: String
     var country: String
     var city: String
+    var coordinate: Coordinate
     var startDate: Date
     var endDate: Date
     
     // MARK: Init
-    init(name: String, logo: String, tags: [String], url: String, country: String, city: String, startDate: Date, endDate: Date) {
+    init(name: String,
+         logo: String,
+         tags: [String],
+         url: String,
+         country: String,
+         city: String,
+         coordinate: Coordinate,
+         startDate: Date,
+         endDate: Date) {
+
         self.name = name
         self.logo = logo
         self.tags = tags
         self.url = url
         self.country = country
         self.city = city
+        self.coordinate = coordinate
         self.startDate = startDate
         self.endDate = endDate
     }
@@ -73,6 +84,7 @@ extension Event {
         url = event.url
         country = event.country
         city = event.city
+        coordinate = event.coordinate
         startDate = event.startDate
         endDate = event.endDate
         
