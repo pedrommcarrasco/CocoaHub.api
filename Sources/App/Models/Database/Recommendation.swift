@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 
 // MARK: - Recommendation
 final class Recommendation {
@@ -27,8 +27,8 @@ final class Recommendation {
     }
 }
 
-// MARK: - MySQLModel
-extension Recommendation: MySQLModel {}
+// MARK: - PostgreSQLModel
+extension Recommendation: PostgreSQLModel {}
 
 // MARK: - Content
 extension Recommendation: Content {}

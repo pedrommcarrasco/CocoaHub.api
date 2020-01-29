@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 
 // MARK: - Article
 final class Article {
@@ -31,14 +31,14 @@ final class Article {
     }
 }
 
-// MARK: - MySQLModel
-extension Article: MySQLModel {
-    func willCreate(on conn: MySQLConnection) throws -> EventLoopFuture<Article> {
+// MARK: - PostgreSQLModel
+extension Article: PostgreSQLModel {
+    func willCreate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<Article> {
         tags = Tags.allowedTags(from: tags, of: .article)
         return Future.map(on: conn) { self }
     }
     
-    func willUpdate(on conn: MySQLConnection) throws -> EventLoopFuture<Article> {
+    func willUpdate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<Article> {
         tags = Tags.allowedTags(from: tags, of: .article)
         return Future.map(on: conn) { self }
     }
@@ -53,7 +53,7 @@ extension Article: Parameter {}
 // MARK: - Migration
 extension Article: Migration {
     
-    static func prepare(on connection: MySQLConnection) -> Future<Void> {
+    static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
         return Database.create(self, on: connection) { builder in
             try addProperties(to: builder)
             builder.reference(from: \.edition, to: \ArticlesEdition.id)

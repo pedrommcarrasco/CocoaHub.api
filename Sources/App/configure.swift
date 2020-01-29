@@ -1,10 +1,10 @@
-import FluentMySQL
+import FluentPostgreSQL
 import Vapor
 
 // MARK: - Configure
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
     // Register providers
-    try services.register(FluentMySQLProvider())
+    try services.register(FluentPostgreSQLProvider())
     
     // Register routes to the router
     services.register(Router.self) { c -> EngineRouter in
@@ -19,13 +19,15 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     
     // Configure a database
     var databases = DatabasesConfig()
-    let databaseConfig = MySQLDatabaseConfig(hostname: Environment.hostname,
-                                             username: Environment.user,
-                                             password: Environment.password,
-                                             database: Environment.database)
+    let databaseConfig = PostgreSQLDatabaseConfig(
+        hostname: Environment.hostname,
+        username: Environment.user,
+        database: Environment.database,
+        password: Environment.password
+    )
     
-    let database = MySQLDatabase(config: databaseConfig)
-    databases.add(database: database, as: .mysql)
+    let database = PostgreSQLDatabase(config: databaseConfig)
+    databases.add(database: database, as: .psql)
     services.register(databases)
     
     /// Configure middleware
@@ -38,12 +40,12 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     
     // Configure migrations
     var migrations = MigrationConfig()
-    migrations.add(model: Event.self, database: .mysql)
-    migrations.add(model: New.self, database: .mysql)
-    migrations.add(model: ArticlesEdition.self, database: .mysql)
-    migrations.add(model: Article.self, database: .mysql)
-    migrations.add(model: Contributor.self, database: .mysql)
-    migrations.add(model: Recommendation.self, database: .mysql)
+    migrations.add(model: Event.self, database: .psql)
+    migrations.add(model: New.self, database: .psql)
+    migrations.add(model: ArticlesEdition.self, database: .psql)
+    migrations.add(model: Article.self, database: .psql)
+    migrations.add(model: Contributor.self, database: .psql)
+    migrations.add(model: Recommendation.self, database: .psql)
     services.register(migrations)
     
     // preferences

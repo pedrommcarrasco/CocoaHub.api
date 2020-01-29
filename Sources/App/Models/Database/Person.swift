@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 
 // MARK: - Person
 final class Person {

@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 import Pagination
 
 // MARK: - Contributor
@@ -24,8 +24,8 @@ final class Contributor {
     }
 }
 
-// MARK: - MySQLModel
-extension Contributor: MySQLModel {}
+// MARK: - PostgreSQLModel
+extension Contributor: PostgreSQLModel {}
 
 // MARK: - Content
 extension Contributor: Content {}

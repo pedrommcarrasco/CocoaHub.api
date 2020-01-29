@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 import Pagination
 
 // MARK: - New
@@ -32,15 +32,15 @@ final class New {
     }
 }
 
-// MARK: - MySQLModel
-extension New: MySQLModel {
+// MARK: - PostgreSQLModel
+extension New: PostgreSQLModel {
     
-    func willCreate(on conn: MySQLConnection) throws -> EventLoopFuture<New> {
+    func willCreate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<New> {
         tags = Tags.allowedTags(from: tags, of: .new)
         return Future.map(on: conn) { self }
     }
     
-    func willUpdate(on conn: MySQLConnection) throws -> EventLoopFuture<New> {
+    func willUpdate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<New> {
         tags = Tags.allowedTags(from: tags, of: .new)
         return Future.map(on: conn) { self }
     }

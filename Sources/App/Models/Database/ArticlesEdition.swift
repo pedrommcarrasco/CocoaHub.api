@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 import Pagination
 
 // MARK: - ArticlesEdition
@@ -31,8 +31,8 @@ final class ArticlesEdition {
     }
 }
 
-// MARK: - MySQLModel
-extension ArticlesEdition: MySQLModel {}
+// MARK: - PostgreSQLModel
+extension ArticlesEdition: PostgreSQLModel {}
 
 // MARK: - Content
 extension ArticlesEdition: Content {}
