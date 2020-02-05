@@ -1,6 +1,28 @@
 import FluentPostgreSQL
 import Vapor
 
+extension PostgreSQLDatabaseConfig {
+    
+    static func make() -> PostgreSQLDatabaseConfig {
+        return makeWithURL() ?? makeWithoutURL()
+    }
+    
+    private static func makeWithURL() -> PostgreSQLDatabaseConfig? {
+        guard let url = Environment.url else { return nil }
+        return PostgreSQLDatabaseConfig(url: url)
+    }
+    
+    private static func makeWithoutURL() -> PostgreSQLDatabaseConfig {
+        return PostgreSQLDatabaseConfig(
+            hostname: Environment.hostname,
+            port: Environment.port,
+            username: Environment.user,
+            database: Environment.database,
+            password: Environment.password
+        )
+    }
+}
+
 // MARK: - Configure
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
     // Register providers
@@ -19,15 +41,9 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     
     // Configure a database
     var databases = DatabasesConfig()
-    let databaseConfig = PostgreSQLDatabaseConfig(
-        hostname: Environment.hostname,
-        port: Environment.port,
-        username: Environment.user,
-        database: Environment.database,
-        password: Environment.password
-    )
+    let databaseConfig: PostgreSQLDatabaseConfig
     
-    let database = PostgreSQLDatabase(config: databaseConfig)
+    let database = PostgreSQLDatabase(config: .make())
     databases.add(database: database, as: .psql)
     services.register(databases)
     

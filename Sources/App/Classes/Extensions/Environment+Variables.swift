@@ -18,6 +18,10 @@ extension Environment {
         return Environment.get("DATABASE_HOSTNAME") ?? "localhost"
     }
     
+    static var url: String? {
+        return Environment.get("DATABASE_URL")
+    }
+
     static var user: String {
         return Environment.get("DATABASE_USER") ?? "vapor"
     }
