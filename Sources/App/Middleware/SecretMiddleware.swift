@@ -12,7 +12,7 @@ final class SecretMiddleware {
     
     // MARK: Constant
     private enum Constant {
-        static let incorrectHeaderReason = "Incorrect X-CocoaHub-Secret header."
+        static let incorrectHeaderReason = "Incorrect SECRETKEY header."
         static let noSecretReason = "No $SECRET set on environment."
     }
     

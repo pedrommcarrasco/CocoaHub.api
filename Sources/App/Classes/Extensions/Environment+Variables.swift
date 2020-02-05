@@ -11,7 +11,7 @@ import Vapor
 extension Environment {
     
     static var secret: String? {
-        return Environment.get("PRIVATE_ROUTES_SECRET")
+        return Environment.get("SECRETKEY")
     }
     
     static var hostname: String {
