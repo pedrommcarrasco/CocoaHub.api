@@ -27,6 +27,13 @@ extension Environment {
     }
     
     static var database: String {
-        return Environment.get("DATABASE_DB") ?? "cocoahub"
+        return Environment.get("DATABASE_DATABASE") ?? "cocoahub"
     }
+    
+    static var port: Int {
+        guard let portString = Environment.get("DATABASE_PORT") else { return 5432 }
+        return Int(portString) ?? 5432
+    }
+    
+    
 }
