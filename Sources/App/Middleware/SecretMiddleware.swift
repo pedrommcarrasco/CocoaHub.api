@@ -12,8 +12,8 @@ final class SecretMiddleware {
     
     // MARK: Constant
     private enum Constant {
-        static let incorrectHeaderReason = "Incorrect SECRET_KEY header."
-        static let noSecretReason = "No SECRET_KEY set on environment."
+        static let incorrectHeaderReason = "Incorrect SECURE_KEY header."
+        static let noSecretReason = "No SECURE_KEY set on environment."
     }
     
     // MARK: Private Properties
