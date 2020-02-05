@@ -11,6 +11,6 @@ import Vapor
 extension HTTPHeaderName {
 
     static var secret: HTTPHeaderName {
-        return HTTPHeaderName("SECRETKEY")
+        return HTTPHeaderName("SECRET_KEY")
     }
 }
