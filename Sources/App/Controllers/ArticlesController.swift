@@ -14,7 +14,7 @@ struct ArticlesController: RouteCollection {
     
     // MARK: Boot
     func boot(router: Router) throws {
-        let editionsRoutes = router.grouped("articlesEditions")
+        let editionsRoutes = router.grouped("editions")
         editionsRoutes.get(use: editions)
         editionsRoutes.get(ArticlesEdition.parameter, "articles", use: articles)
         editionsRoutes.group(SecretMiddleware.self) {

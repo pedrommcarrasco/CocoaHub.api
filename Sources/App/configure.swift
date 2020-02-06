@@ -40,15 +40,13 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     services.register(SecretMiddleware.self)
     
     // Configure a database
-    var databases = DatabasesConfig()
-    let databaseConfig: PostgreSQLDatabaseConfig
-    
     let database = PostgreSQLDatabase(config: .make())
-    databases.add(database: database, as: .psql)
-    services.register(databases)
+    var databasesConfig = DatabasesConfig()
+    databasesConfig.add(database: database, as: .psql)
+    services.register(databasesConfig)
     
     /// Configure middleware
-    services.register { c -> MiddlewareConfig in
+    services.register { _ -> MiddlewareConfig in
         var middleware = MiddlewareConfig()
         middleware.use(LogMiddleware.self)
         middleware.use(ErrorMiddleware.self)

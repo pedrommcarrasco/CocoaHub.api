@@ -23,6 +23,10 @@ struct NewsController: RouteCollection {
             $0.put(New.parameter, use: updateNew)
             $0.delete(New.parameter, use: deleteNew)
         }
+
+        routes.grouped("raw").group(SecretMiddleware.self) {
+            $0.post(New.self, use: createNewRaw)
+        }
     }
 }
 
@@ -42,6 +46,10 @@ extension NewsController {
 
 // MARK: - POST
 extension NewsController {
+
+    func createNewRaw(_ req: Request, data: New) throws -> Future<New> {
+        return data.save(on: req)
+    }
     
     func createNew(_ req: Request, data: NewInput) throws -> Future<New> {
         let new = New(title: data.title, description: data.description, date: Date(), url: data.url, tags: data.tags, curator: data.curator)
