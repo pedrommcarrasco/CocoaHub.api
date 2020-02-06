@@ -7,8 +7,8 @@
 
 import Vapor
 
-// MARK: - Coordinate
-final class Coordinate {
+// MARK: - Coordinates
+final class Coordinates {
 
     // MARK: Properties
     let latitute: Double
@@ -22,4 +22,4 @@ final class Coordinate {
 }
 
 // MARK: - Content
-extension Coordinate: Content {}
+extension Coordinates: Content {}
