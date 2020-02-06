@@ -20,7 +20,7 @@ final class Event {
     var url: String
     var country: String
     var city: String
-    var coordinates: Coordinates
+    var coordinates: Coordinates?
     var startDate: Date
     var endDate: Date
     var isActive: Bool
@@ -32,7 +32,7 @@ final class Event {
          url: String,
          country: String,
          city: String,
-         coordinates: Coordinates,
+         coordinates: Coordinates?,
          startDate: Date,
          endDate: Date,
          isActive: Bool
