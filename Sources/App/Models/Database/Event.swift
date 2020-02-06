@@ -23,6 +23,7 @@ final class Event {
     var coordinate: Coordinate
     var startDate: Date
     var endDate: Date
+    var isActive: Bool
     
     // MARK: Init
     init(name: String,
@@ -33,7 +34,9 @@ final class Event {
          city: String,
          coordinate: Coordinate,
          startDate: Date,
-         endDate: Date) {
+         endDate: Date,
+         isActive: Bool
+    ) {
 
         self.name = name
         self.logo = logo
@@ -44,6 +47,7 @@ final class Event {
         self.coordinate = coordinate
         self.startDate = startDate
         self.endDate = endDate
+        self.isActive = isActive
     }
 }
 
@@ -87,6 +91,7 @@ extension Event {
         coordinate = event.coordinate
         startDate = event.startDate
         endDate = event.endDate
+        isActive = event.isActive
         
         return self
     }
