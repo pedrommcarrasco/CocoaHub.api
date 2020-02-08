@@ -14,11 +14,11 @@ final class NewInput {
     let title: String
     let description: String
     let url: String
-    let tags: [String]
+    let tags: [NewTag]
     let curator: Person
     
     // MARK: Init
-    init(title: String, description: String, url: String, tags: [String], curator: Person) {
+    init(title: String, description: String, url: String, tags: [NewTag], curator: Person) {
         self.title = title
         self.description = description
         self.url = url

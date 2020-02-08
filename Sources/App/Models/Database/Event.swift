@@ -16,7 +16,7 @@ final class Event {
     var id: Int?
     var name: String
     var logo: String
-    var tags: [String]
+    var tags: [EventTag]
     var url: String
     var country: String
     var city: String
@@ -28,7 +28,7 @@ final class Event {
     // MARK: Init
     init(name: String,
          logo: String,
-         tags: [String],
+         tags: [EventTag],
          url: String,
          country: String,
          city: String,
@@ -55,12 +55,12 @@ final class Event {
 extension Event: PostgreSQLModel {
     
     func willCreate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<Event> {
-        tags = Tags.allowedTags(from: tags, of: .event)
+        tags = tags.sorted { $0.rawValue <= $1.rawValue }
         return Future.map(on: conn) { self }
     }
     
     func willUpdate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<Event> {
-        tags = Tags.allowedTags(from: tags, of: .event)
+        tags = tags.sorted { $0.rawValue <= $1.rawValue }
         return Future.map(on: conn) { self }
     }
 }

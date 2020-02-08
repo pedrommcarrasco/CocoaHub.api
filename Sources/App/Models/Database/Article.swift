@@ -14,14 +14,14 @@ final class Article {
     // MARK: Properties
     var id: Int?
     var title: String
-    var tags: [String]
+    var tags: [ArticleTag]
     var url: String
     var author: Person
     var curator: Person
     var edition: ArticlesEdition.ID
     
     // MARK: Init
-    init(title: String, tags: [String], url: String, author: Person, curator: Person, edition: ArticlesEdition.ID) {
+    init(title: String, tags: [ArticleTag], url: String, author: Person, curator: Person, edition: ArticlesEdition.ID) {
         self.title = title
         self.tags = tags
         self.url = url
@@ -34,12 +34,12 @@ final class Article {
 // MARK: - PostgreSQLModel
 extension Article: PostgreSQLModel {
     func willCreate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<Article> {
-        tags = Tags.allowedTags(from: tags, of: .article)
+        tags = tags.sorted { $0.rawValue <= $1.rawValue }
         return Future.map(on: conn) { self }
     }
     
     func willUpdate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<Article> {
-        tags = Tags.allowedTags(from: tags, of: .article)
+        tags = tags.sorted { $0.rawValue <= $1.rawValue }
         return Future.map(on: conn) { self }
     }
 }
