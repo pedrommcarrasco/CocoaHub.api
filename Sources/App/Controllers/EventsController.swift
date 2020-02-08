@@ -36,8 +36,7 @@ extension EventsController {
 //            .group(.and) {
 //                $0.filter(\.startDate >= today)
 //                $0.filter(\.isActive == true)
-//            }
-            .sort(\.startDate)
+//            .sort(\.startDate)
             .paginate(for: req)
     }
 
