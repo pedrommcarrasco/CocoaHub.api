@@ -59,8 +59,8 @@ extension ArticlesController {
             .and(articles)
             .map(to: EditionDetailsOutput.self) { edition, articles in
                 let sortedArticles = articles.sorted(by: { (left, right) -> Bool in
-                    let leftFlatTags = left.tags.map { $0.rawValue }.joined()
-                    let rightFlatTags = right.tags.map { $0.rawValue }.joined()
+                    let leftFlatTags = left.tags.joined()
+                    let rightFlatTags = right.tags.joined()
                     return leftFlatTags < rightFlatTags || (leftFlatTags == rightFlatTags && left.title < right.title)
                 })
                 

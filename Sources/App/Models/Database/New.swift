@@ -18,11 +18,11 @@ final class New {
     var description: String
     var date: Date
     var url: String
-    var tags: [NewTag]
+    var tags: [String]
     var curator: Person
     
     // MARK: Init
-    init(title: String, description: String, date: Date, url: String, tags: [NewTag], curator: Person) {
+    init(title: String, description: String, date: Date, url: String, tags: [String], curator: Person) {
         self.title = title
         self.description = description
         self.date = date
@@ -36,12 +36,12 @@ final class New {
 extension New: PostgreSQLModel {
     
     func willCreate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<New> {
-        tags = tags.sorted { $0.rawValue <= $1.rawValue }
+        tags = Tags.allowedTags(from: tags, of: .new)
         return Future.map(on: conn) { self }
     }
     
     func willUpdate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<New> {
-        tags = tags.sorted { $0.rawValue <= $1.rawValue }
+        tags = Tags.allowedTags(from: tags, of: .new)
         return Future.map(on: conn) { self }
     }
 }
