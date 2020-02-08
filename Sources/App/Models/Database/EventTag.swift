@@ -5,7 +5,7 @@
 //  Created by Pedro Carrasco on 08/02/2020.
 //
 
-import FluentPostgreSQL
+import Vapor
 
 // MARK: - Event
 enum EventTag: String {
@@ -13,5 +13,5 @@ enum EventTag: String {
     case tickets
 }
 
-// MARK: - EventTag
-extension EventTag: PostgreSQLEnum {}
+// MARK: - Content
+extension EventTag: Content {}

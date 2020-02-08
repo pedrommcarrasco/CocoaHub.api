@@ -5,7 +5,7 @@
 //  Created by Pedro Carrasco on 08/02/2020.
 //
 
-import FluentPostgreSQL
+import Vapor
 
 // MARK: - NewTag
 enum NewTag: String {
@@ -17,5 +17,5 @@ enum NewTag: String {
     case press
 }
 
-// MARK: - PostgreSQLEnum
-extension NewTag: PostgreSQLEnum {}
+// MARK: - Content
+extension NewTag: Content {}

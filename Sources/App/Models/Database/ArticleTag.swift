@@ -5,7 +5,7 @@
 //  Created by Pedro Carrasco on 08/02/2020.
 //
 
-import FluentPostgreSQL
+import Vapor
 
 // MARK: - ArticleTag
 enum ArticleTag: String {
@@ -27,5 +27,5 @@ enum ArticleTag: String {
     case workflow
 }
 
-// MARK: - PostgreSQLEnum
-extension ArticleTag: PostgreSQLEnum {}
+// MARK: - Content
+extension ArticleTag: Content {}
