@@ -55,12 +55,12 @@ final class Event {
 extension Event: PostgreSQLModel {
     
     func willCreate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<Event> {
-        tags = Tags.allowedTags(from: tags, of: .event)
+        tags = tags.sorted()
         return Future.map(on: conn) { self }
     }
     
     func willUpdate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<Event> {
-        tags = Tags.allowedTags(from: tags, of: .event)
+        tags = tags.sorted()
         return Future.map(on: conn) { self }
     }
 }
@@ -76,6 +76,21 @@ extension Event: Parameter {}
 
 // MARK: - Paginatable
 extension Event: Paginatable {}
+
+// MARK: - Validatable
+extension Event: Validatable {
+    
+    static func validations() throws -> Validations<Event> {
+        var validations = Validations(Event.self)
+        try validations.add(\.url, .url)
+        validations.add("Tags must be valid") {
+            guard !Tags.containsInvalidTags($0.tags, for: .event) else {
+                throw Abort(.internalServerError, reason: "Contains invalid tags")
+            }
+        }
+        return validations
+    }
+}
 
 // MARK: - Update
 extension Event {

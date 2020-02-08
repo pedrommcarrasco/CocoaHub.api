@@ -39,6 +39,16 @@ extension Recommendation: Migration {}
 // MARK: - Parameter
 extension Recommendation: Parameter {}
 
+// MARK: - Validatable
+extension Recommendation: Validatable {
+    
+    static func validations() throws -> Validations<Recommendation> {
+        var validations = Validations(Recommendation.self)
+        try validations.add(\.url, .url)
+        return validations
+    }
+}
+
 // MARK: - Update
 extension Recommendation {
     

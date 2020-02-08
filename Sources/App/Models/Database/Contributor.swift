@@ -39,6 +39,16 @@ extension Contributor: Parameter {}
 // MARK: - Paginatable
 extension Contributor: Paginatable {}
 
+// MARK: - Validatable
+extension Contributor: Validatable {
+    
+    static func validations() throws -> Validations<Contributor> {
+        var validations = Validations(Contributor.self)
+        try validations.add(\.url, .url)
+        return validations
+    }
+}
+
 // MARK: - Update
 extension Contributor {
     

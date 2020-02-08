@@ -46,6 +46,17 @@ extension ArticlesEdition: Parameter {}
 // MARK: - Paginatable
 extension ArticlesEdition: Paginatable {}
 
+// MARK: - Validatable
+extension ArticlesEdition: Validatable {
+    
+    static func validations() throws -> Validations<ArticlesEdition> {
+        var validations = Validations(ArticlesEdition.self)
+        try validations.add(\.title, .count(0..<254))
+        try validations.add(\.description, .count(0..<254))
+        return validations
+    }
+}
+
 // MARK: - Update
 extension ArticlesEdition {
     
