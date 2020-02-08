@@ -32,10 +32,11 @@ extension EventsController {
     func events(_ req: Request) throws -> Future<Paginated<Event>> {
         let today = Date()
         return try Event.query(on: req)
-            .group(.and) {
-                $0.filter(\.startDate >= today)
-                $0.filter(\.isActive == true)
-            }
+            .filter(\.isActive == true)
+//            .group(.and) {
+//                $0.filter(\.startDate >= today)
+//                $0.filter(\.isActive == true)
+//            }
             .sort(\.startDate)
             .paginate(for: req)
     }
