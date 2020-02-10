@@ -23,12 +23,20 @@ struct ArticlesController: RouteCollection {
             $0.delete(ArticlesEdition.parameter, use: deleteEdition)
         }
         
+        editionsRoutes.group("all") {
+            $0.get(use: allEditions)
+        }
+        
         let articlesRoutes = router.grouped("articles")
         articlesRoutes.get(Article.parameter, use: article)
         articlesRoutes.group(SecretMiddleware.self) {
             $0.post(Article.self, use: createArticle)
             $0.put(Article.parameter, use: updateArticle)
             $0.delete(Article.parameter, use: deleteArticle)
+        }
+        
+        articlesRoutes.group("all") {
+            $0.get(use: allArticles)
         }
     }
 }
@@ -42,6 +50,19 @@ extension ArticlesController {
             .filter(\.date <= today)
             .sort(\.date, .descending)
             .paginate(for: req)
+    }
+    
+    func allEditions(_ req: Request) throws -> Future<[ArticlesEdition]> {
+        return ArticlesEdition.query(on: req)
+            .sort(\.id, .ascending)
+            .all()
+    }
+    
+    
+    func allArticles(_ req: Request) throws -> Future<[ArticlesEdition]> {
+        return ArticlesEdition.query(on: req)
+            .sort(\.id, .ascending)
+            .all()
     }
     
     func articles(_ req: Request) throws -> Future<EditionDetailsOutput> {

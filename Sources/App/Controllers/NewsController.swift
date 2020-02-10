@@ -23,6 +23,10 @@ struct NewsController: RouteCollection {
             $0.put(New.parameter, use: updateNew)
             $0.delete(New.parameter, use: deleteNew)
         }
+        
+        routes.group("all") {
+            $0.get(use: allNews)
+        }
     }
 }
 
@@ -33,6 +37,12 @@ extension NewsController {
         return try New.query(on: req)
             .sort(\.date, .descending)
             .paginate(for: req)
+    }
+    
+    func allNews(_ req: Request) throws -> Future<[New]> {
+        return New.query(on: req)
+            .sort(\.id, .ascending)
+            .all()
     }
     
     func new(_ req: Request) throws -> Future<New> {
