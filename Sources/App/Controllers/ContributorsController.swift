@@ -31,6 +31,7 @@ extension ContributorsController {
     
     func contributors(_ req: Request) throws -> Future<Paginated<Contributor>> {
         return try Contributor.query(on: req)
+            .groupBy(\.id)
             .sort(\.name)
             .paginate(for: req)
     }
