@@ -11,12 +11,12 @@ import Vapor
 final class Coordinates {
 
     // MARK: Properties
-    let latitute: Double
+    let latitude: Double
     let longitude: Double
 
     // MARK: Init
-    init(latitute: Double, longitude: Double) {
-        self.latitute = latitute
+    init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
         self.longitude = longitude
     }
 }
