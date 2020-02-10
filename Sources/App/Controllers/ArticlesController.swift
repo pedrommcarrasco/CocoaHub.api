@@ -60,7 +60,7 @@ extension ArticlesController {
     
     
     func allArticles(_ req: Request) throws -> Future<[ArticlesEdition]> {
-        return ArticlesEdition.query(on: req)
+        return Article.query(on: req)
             .sort(\.id, .ascending)
             .all()
     }
