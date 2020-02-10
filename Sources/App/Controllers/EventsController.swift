@@ -33,10 +33,10 @@ extension EventsController {
         let today = Date()
         return try Event.query(on: req)
             .filter(\.isActive == true)
-//            .group(.and) {
-//                $0.filter(\.startDate >= today)
-//                $0.filter(\.isActive == true)
-//            .sort(\.startDate)
+            .group(.and) {
+                $0.filter(\.startDate >= today)
+                $0.filter(\.isActive == true)
+            }
             .paginate(for: req)
     }
 
