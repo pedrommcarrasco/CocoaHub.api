@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 import Pagination
 
 // MARK: - ArticlesEdition
@@ -31,8 +31,8 @@ final class ArticlesEdition {
     }
 }
 
-// MARK: - MySQLModel
-extension ArticlesEdition: MySQLModel {}
+// MARK: - PostgreSQLModel
+extension ArticlesEdition: PostgreSQLModel {}
 
 // MARK: - Content
 extension ArticlesEdition: Content {}
@@ -45,6 +45,17 @@ extension ArticlesEdition: Parameter {}
 
 // MARK: - Paginatable
 extension ArticlesEdition: Paginatable {}
+
+// MARK: - Validatable
+extension ArticlesEdition: Validatable {
+    
+    static func validations() throws -> Validations<ArticlesEdition> {
+        var validations = Validations(ArticlesEdition.self)
+        try validations.add(\.title, .count(0..<254))
+        try validations.add(\.description, .count(0..<254))
+        return validations
+    }
+}
 
 // MARK: - Update
 extension ArticlesEdition {

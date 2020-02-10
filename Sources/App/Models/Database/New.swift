@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 import Pagination
 
 // MARK: - New
@@ -32,16 +32,16 @@ final class New {
     }
 }
 
-// MARK: - MySQLModel
-extension New: MySQLModel {
+// MARK: - PostgreSQLModel
+extension New: PostgreSQLModel {
     
-    func willCreate(on conn: MySQLConnection) throws -> EventLoopFuture<New> {
-        tags = Tags.allowedTags(from: tags, of: .new)
+    func willCreate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<New> {
+        tags = tags.sorted()
         return Future.map(on: conn) { self }
     }
     
-    func willUpdate(on conn: MySQLConnection) throws -> EventLoopFuture<New> {
-        tags = Tags.allowedTags(from: tags, of: .new)
+    func willUpdate(on conn: PostgreSQLConnection) throws -> EventLoopFuture<New> {
+        tags = tags.sorted()
         return Future.map(on: conn) { self }
     }
 }
@@ -57,6 +57,23 @@ extension New: Parameter {}
 
 // MARK: - Paginatable
 extension New: Paginatable {}
+
+// MARK: - Validatable
+extension New: Validatable {
+    
+    static func validations() throws -> Validations<New> {
+        var validations = Validations(New.self)
+        try validations.add(\.url, .url)
+        try validations.add(\.title, .count(0..<254))
+        try validations.add(\.description, .count(0..<254))
+        validations.add("Tags must be valid") {
+            guard !Tags.containsInvalidTags($0.tags, for: .new) else {
+                throw Abort(.internalServerError, reason: "Contains invalid tags")
+            }
+        }
+        return validations
+    }
+}
 
 // MARK: - Update
 extension New {

@@ -17,26 +17,22 @@ enum TagType {
 // MARK: - Tags
 struct Tags {
     
-    static func allowedTags(from tags: [String], of type: TagType) -> [String] {
-        return tags
-            .compactMap {
-                switch type {
-                case .event:
-                    return Event(rawValue: $0)?.rawValue
-                case .new:
-                    return New(rawValue: $0)?.rawValue
-                case .article:
-                    return Article(rawValue: $0)?.rawValue
-                }
-            }
-            .sorted()
+    static func containsInvalidTags(_ tags: [String], for type: TagType) -> Bool {
+        switch type {
+        case .event:
+            return tags.map(Event.init).contains(nil)
+        case .new:
+            return tags.map(New.init).contains(nil)
+        case .article:
+            return tags.map(Article.init).contains(nil)
+        }
     }
 }
 
 // MARK: - Tags Definition
 private extension Tags {
     
-    enum New: String {
+    enum New: String, CaseIterable {
         case apple
         case community
         case evolution
@@ -45,7 +41,7 @@ private extension Tags {
         case press
     }
     
-    enum Article: String {
+    enum Article: String, CaseIterable {
         case architecture
         case server
         case business
@@ -64,7 +60,7 @@ private extension Tags {
         case workflow
     }
     
-    enum Event: String {
+    enum Event: String, CaseIterable {
         case callForPapers
         case tickets
     }

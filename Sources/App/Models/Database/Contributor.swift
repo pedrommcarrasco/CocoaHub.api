@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 import Pagination
 
 // MARK: - Contributor
@@ -24,8 +24,8 @@ final class Contributor {
     }
 }
 
-// MARK: - MySQLModel
-extension Contributor: MySQLModel {}
+// MARK: - PostgreSQLModel
+extension Contributor: PostgreSQLModel {}
 
 // MARK: - Content
 extension Contributor: Content {}
@@ -38,6 +38,16 @@ extension Contributor: Parameter {}
 
 // MARK: - Paginatable
 extension Contributor: Paginatable {}
+
+// MARK: - Validatable
+extension Contributor: Validatable {
+    
+    static func validations() throws -> Validations<Contributor> {
+        var validations = Validations(Contributor.self)
+        try validations.add(\.url, .url)
+        return validations
+    }
+}
 
 // MARK: - Update
 extension Contributor {

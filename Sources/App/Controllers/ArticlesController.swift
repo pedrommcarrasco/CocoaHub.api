@@ -14,7 +14,7 @@ struct ArticlesController: RouteCollection {
     
     // MARK: Boot
     func boot(router: Router) throws {
-        let editionsRoutes = router.grouped("articlesEditions")
+        let editionsRoutes = router.grouped("editions")
         editionsRoutes.get(use: editions)
         editionsRoutes.get(ArticlesEdition.parameter, "articles", use: articles)
         editionsRoutes.group(SecretMiddleware.self) {
@@ -23,20 +23,12 @@ struct ArticlesController: RouteCollection {
             $0.delete(ArticlesEdition.parameter, use: deleteEdition)
         }
         
-        editionsRoutes.group("all") {
-            $0.get(use: allEditions)
-        }
-        
         let articlesRoutes = router.grouped("articles")
         articlesRoutes.get(Article.parameter, use: article)
         articlesRoutes.group(SecretMiddleware.self) {
             $0.post(Article.self, use: createArticle)
             $0.put(Article.parameter, use: updateArticle)
             $0.delete(Article.parameter, use: deleteArticle)
-        }
-        
-        articlesRoutes.group("all") {
-            $0.get(use: allArticles)
         }
     }
 }
@@ -47,22 +39,10 @@ extension ArticlesController {
     func editions(_ req: Request) throws -> Future<Paginated<ArticlesEdition>> {
         let today = Date()
         return try ArticlesEdition.query(on: req)
+            .groupBy(\.id)
             .filter(\.date <= today)
             .sort(\.date, .descending)
             .paginate(for: req)
-    }
-    
-    func allEditions(_ req: Request) throws -> Future<[ArticlesEdition]> {
-        return ArticlesEdition.query(on: req)
-            .sort(\.id, .ascending)
-            .all()
-    }
-    
-    
-    func allArticles(_ req: Request) throws -> Future<[Article]> {
-        return Article.query(on: req)
-            .sort(\.id, .ascending)
-            .all()
     }
     
     func articles(_ req: Request) throws -> Future<EditionDetailsOutput> {
@@ -73,6 +53,7 @@ extension ArticlesController {
         let articles = edition
             .flatMap(to: [Article].self) {
                 try $0.articles.query(on: req)
+                    .groupBy(\.id)
                     .all()
         }
         

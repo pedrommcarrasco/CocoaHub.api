@@ -23,9 +23,9 @@ struct NewsController: RouteCollection {
             $0.put(New.parameter, use: updateNew)
             $0.delete(New.parameter, use: deleteNew)
         }
-        
-        routes.group("all") {
-            $0.get(use: allNews)
+
+        routes.grouped("raw").group(SecretMiddleware.self) {
+            $0.post(New.self, use: createNewRaw)
         }
     }
 }
@@ -35,14 +35,9 @@ extension NewsController {
     
     func news(_ req: Request) throws -> Future<Paginated<New>> {
         return try New.query(on: req)
+            .groupBy(\.id)
             .sort(\.date, .descending)
             .paginate(for: req)
-    }
-    
-    func allNews(_ req: Request) throws -> Future<[New]> {
-        return New.query(on: req)
-            .sort(\.id, .ascending)
-            .all()
     }
     
     func new(_ req: Request) throws -> Future<New> {
@@ -52,6 +47,10 @@ extension NewsController {
 
 // MARK: - POST
 extension NewsController {
+
+    func createNewRaw(_ req: Request, data: New) throws -> Future<New> {
+        return data.save(on: req)
+    }
     
     func createNew(_ req: Request, data: NewInput) throws -> Future<New> {
         let new = New(title: data.title, description: data.description, date: Date(), url: data.url, tags: data.tags, curator: data.curator)

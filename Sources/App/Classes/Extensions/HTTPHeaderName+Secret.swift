@@ -11,6 +11,6 @@ import Vapor
 extension HTTPHeaderName {
 
     static var secret: HTTPHeaderName {
-        return HTTPHeaderName("X-CocoaHub-Secret")
+        return HTTPHeaderName("SECURE_KEY")
     }
 }

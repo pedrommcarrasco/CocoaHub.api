@@ -6,7 +6,6 @@
 //
 
 import Vapor
-import FluentMySQL
 
 // MARK: - Person
 final class Person {
@@ -24,6 +23,20 @@ final class Person {
 
 // MARK: - Content
 extension Person: Content {}
+
+// MARK: - Reflectable
+extension Person: Reflectable {}
+
+// MARK: - Validatable
+extension Person: Validatable {
+    
+    static func validations() throws -> Validations<Person> {
+        var validations = Validations(Person.self)
+        try validations.add(\.name, .count(0..<254))
+        try validations.add(\.url, .url)
+        return validations
+    }
+}
 
 // MARK: - Comparable
 extension Person: Comparable {

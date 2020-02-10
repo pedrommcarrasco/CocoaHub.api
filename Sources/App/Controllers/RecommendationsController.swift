@@ -30,6 +30,7 @@ extension RecommendationsController {
     
     func recommendations(_ req: Request) -> Future<[Recommendation]> {
         return Recommendation.query(on: req)
+            .groupBy(\.id)
             .sort(\.name)
             .all()
     }
