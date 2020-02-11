@@ -35,9 +35,8 @@ extension NewsController {
     
     func news(_ req: Request) throws -> Future<Paginated<New>> {
         return try New.query(on: req)
-            .groupBy(\.id)
-            .sort(\.date, .descending)
             .paginate(for: req)
+
     }
     
     func new(_ req: Request) throws -> Future<New> {
