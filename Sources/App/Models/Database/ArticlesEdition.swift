@@ -44,7 +44,14 @@ extension ArticlesEdition: Migration {}
 extension ArticlesEdition: Parameter {}
 
 // MARK: - Paginatable
-extension ArticlesEdition: Paginatable {}
+extension ArticlesEdition: Paginatable {
+
+    static var defaultPageSorts: [PostgreSQLOrderBy] {
+        return [
+            (\ArticlesEdition.date).querySort(.descending)
+        ]
+    }
+}
 
 // MARK: - Validatable
 extension ArticlesEdition: Validatable {

@@ -37,7 +37,14 @@ extension Contributor: Migration {}
 extension Contributor: Parameter {}
 
 // MARK: - Paginatable
-extension Contributor: Paginatable {}
+extension Contributor: Paginatable {
+
+    static var defaultPageSorts: [PostgreSQLOrderBy] {
+        return [
+            (\Contributor.name).querySort(.ascending)
+        ]
+    }
+}
 
 // MARK: - Validatable
 extension Contributor: Validatable {
