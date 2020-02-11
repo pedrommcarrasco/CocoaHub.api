@@ -56,7 +56,14 @@ extension New: Migration {}
 extension New: Parameter {}
 
 // MARK: - Paginatable
-extension New: Paginatable {}
+extension New: Paginatable {
+
+    static var defaultPageSorts: [PostgreSQLOrderBy] {
+        return [
+            (\New.date).querySort(.descending)
+        ]
+    }
+}
 
 // MARK: - Validatable
 extension New: Validatable {

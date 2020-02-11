@@ -75,7 +75,14 @@ extension Event: Migration {}
 extension Event: Parameter {}
 
 // MARK: - Paginatable
-extension Event: Paginatable {}
+extension Event: Paginatable {
+
+    static var defaultPageSorts: [PostgreSQLOrderBy] {
+        return [
+            (\Event.startDate).querySort(.ascending)
+        ]
+    }
+}
 
 // MARK: - Validatable
 extension Event: Validatable {

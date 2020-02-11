@@ -39,9 +39,7 @@ extension ArticlesController {
     func editions(_ req: Request) throws -> Future<Paginated<ArticlesEdition>> {
         let today = Date()
         return try ArticlesEdition.query(on: req)
-            .groupBy(\.id)
             .filter(\.date <= today)
-            .sort(\.date, .descending)
             .paginate(for: req)
     }
     
@@ -53,7 +51,6 @@ extension ArticlesController {
         let articles = edition
             .flatMap(to: [Article].self) {
                 try $0.articles.query(on: req)
-                    .groupBy(\.id)
                     .all()
         }
         
