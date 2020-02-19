@@ -43,6 +43,7 @@ extension ContributorsController {
 extension ContributorsController {
     
     func createContributor(_ req: Request, data: Contributor) throws -> Future<Contributor> {
+        try data.validate()
         return data.save(on: req)
     }
 }
@@ -52,6 +53,7 @@ extension ContributorsController {
     
     func updateContributor(_ req: Request) throws -> Future<Contributor> {
         return try flatMap(to: Contributor.self, req.parameters.next(Contributor.self), req.content.decode(Contributor.self)) {
+            try $1.validate()
             return $0.update(with: $1).save(on: req)
         }
     }

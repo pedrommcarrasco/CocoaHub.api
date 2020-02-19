@@ -39,6 +39,7 @@ extension RecommendationsController {
 extension RecommendationsController {
     
     func createRecommendation(_ req: Request, data: Recommendation) throws -> Future<Recommendation> {
+        try data.validate()
         return data.save(on: req)
     }
 }
@@ -48,6 +49,7 @@ extension RecommendationsController {
     
     func updateRecommendation(_ req: Request) throws -> Future<Recommendation> {
         return try flatMap(to: Recommendation.self, req.parameters.next(Recommendation.self), req.content.decode(Recommendation.self)) {
+            try $1.validate()
             return $0.update(with: $1).save(on: req)
         }
     }

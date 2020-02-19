@@ -48,6 +48,7 @@ extension EventsController {
 extension EventsController {
     
     func createEvent(_ req: Request, data: Event) throws -> Future<Event> {
+        try data.validate()
         return data.save(on: req)
     }
 }
@@ -57,6 +58,7 @@ extension EventsController {
     
     func updateEvent(_ req: Request) throws -> Future<Event> {
         return try flatMap(to: Event.self, req.parameters.next(Event.self), req.content.decode(Event.self)) {
+            try $1.validate()
             return $0.update(with: $1).save(on: req)
         }
     }

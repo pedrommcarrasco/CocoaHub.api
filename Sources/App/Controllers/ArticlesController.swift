@@ -76,10 +76,12 @@ extension ArticlesController {
 extension ArticlesController {
     
     func createEdition(_ req: Request, data: ArticlesEdition) throws -> Future<ArticlesEdition> {
+        try data.validate()
         return data.save(on: req)
     }
     
     func createArticle(_ req: Request, data: Article) throws -> Future<Article> {
+        try data.validate()
         return data.save(on: req)
     }
 }
@@ -89,12 +91,14 @@ extension ArticlesController {
     
     func updateEdition(_ req: Request) throws -> Future<ArticlesEdition> {
         return try flatMap(to: ArticlesEdition.self, req.parameters.next(ArticlesEdition.self), req.content.decode(ArticlesEdition.self)) {
+            try $1.validate()
             return $0.update(with: $1).save(on: req)
         }
     }
     
     func updateArticle(_ req: Request) throws -> Future<Article> {
         return try flatMap(to: Article.self, req.parameters.next(Article.self), req.content.decode(Article.self)) {
+            try $1.validate()
             return $0.update(with: $1).save(on: req)
         }
     }

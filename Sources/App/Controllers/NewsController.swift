@@ -48,11 +48,13 @@ extension NewsController {
 extension NewsController {
 
     func createNewRaw(_ req: Request, data: New) throws -> Future<New> {
+        try data.validate()
         return data.save(on: req)
     }
     
     func createNew(_ req: Request, data: NewInput) throws -> Future<New> {
         let new = New(title: data.title, description: data.description, date: Date(), url: data.url, tags: data.tags, curator: data.curator)
+        try new.validate()
         return new.create(on: req)
     }
 }
@@ -62,7 +64,9 @@ extension NewsController {
     
     func updateNew(_ req: Request) throws -> Future<New> {
         return try flatMap(to: New.self, req.parameters.next(New.self), req.content.decode(NewInput.self)) {
-            return $0.update(with: $1).save(on: req)
+            let data = $0.update(with: $1)
+            try data.validate()
+            return data.save(on: req)
         }
     }
 }
