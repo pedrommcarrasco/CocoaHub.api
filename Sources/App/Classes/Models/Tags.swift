@@ -39,6 +39,7 @@ private extension Tags {
         case newsletter
         case podcast
         case press
+        case other
     }
     
     enum Article: String, CaseIterable {
@@ -63,5 +64,6 @@ private extension Tags {
     enum Event: String, CaseIterable {
         case callForPapers
         case tickets
+        case remote
     }
 }
