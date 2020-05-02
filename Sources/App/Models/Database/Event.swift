@@ -18,8 +18,8 @@ final class Event {
     var logo: String
     var tags: [String]
     var url: String
-    var country: String
-    var city: String
+    var country: String?
+    var city: String?
     var coordinates: Coordinates?
     var startDate: Date
     var endDate: Date
@@ -30,8 +30,8 @@ final class Event {
          logo: String,
          tags: [String],
          url: String,
-         country: String,
-         city: String,
+         country: String?,
+         city: String?,
          coordinates: Coordinates?,
          startDate: Date,
          endDate: Date,

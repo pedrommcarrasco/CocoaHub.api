@@ -65,5 +65,6 @@ private extension Tags {
         case callForPapers
         case tickets
         case remote
+        case free
     }
 }
