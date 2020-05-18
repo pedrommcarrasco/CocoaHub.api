@@ -44,6 +44,7 @@ private extension Tags {
     
     enum Article: String, CaseIterable {
         case architecture
+        case accessibility
         case server
         case business
         case career
@@ -52,6 +53,7 @@ private extension Tags {
         case gaming
         case language
         case other
+        case security
         case storage
         case testing
         case tipsAndTricks
