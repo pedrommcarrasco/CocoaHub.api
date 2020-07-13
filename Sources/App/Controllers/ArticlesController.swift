@@ -77,6 +77,7 @@ extension ArticlesController {
         let latestEdition = ArticlesEdition.query(on: req)
             .sort(\.id, .descending)
             .first()
+            .unwrap(or: Abort(.notFound))
         
         return latestEdition.flatMap(to: [Article].self) {
             try $0.articles.query(on: req).all()
