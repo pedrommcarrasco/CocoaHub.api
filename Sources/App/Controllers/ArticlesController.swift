@@ -74,11 +74,11 @@ extension ArticlesController {
     }
     
     func latestArticles(_ req: Request) throws -> Future<[Article]> {
-        let latestEdition = try ArticlesEdition.query(on: req)
+        let latestEdition = ArticlesEdition.query(on: req)
             .sort(\.id, .descending)
             .first()
         
-        return edition.flatMap(to: [Article].self) {
+        return latestEdition.flatMap(to: [Article].self) {
             try $0.articles.query(on: req).all()
         }
     }
