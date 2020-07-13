@@ -16,12 +16,14 @@ struct ArticlesController: RouteCollection {
     func boot(router: Router) throws {
         let editionsRoutes = router.grouped("editions")
         editionsRoutes.get(use: editions)
+        editionsRoutes.get("latest", use: latestArticles)
         editionsRoutes.get(ArticlesEdition.parameter, "articles", use: articles)
         editionsRoutes.group(SecretMiddleware.self) {
             $0.post(ArticlesEdition.self, use: createEdition)
             $0.put(ArticlesEdition.parameter, use: updateEdition)
             $0.delete(ArticlesEdition.parameter, use: deleteEdition)
         }
+        
         
         let articlesRoutes = router.grouped("articles")
         articlesRoutes.get(Article.parameter, use: article)
@@ -69,6 +71,16 @@ extension ArticlesController {
     
     func article(_ req: Request) throws -> Future<Article> {
         return try req.parameters.next(Article.self)
+    }
+    
+    func latestArticles(_ req: Request) throws -> Future<[Article]> {
+        let latestEdition = try ArticlesEdition.query(on: req)
+            .sort(\.id, .descending)
+            .first()
+        
+        return edition.flatMap(to: [Article].self) {
+            try $0.articles.query(on: req).all()
+        }
     }
 }
 
