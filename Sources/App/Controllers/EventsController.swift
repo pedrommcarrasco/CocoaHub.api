@@ -51,7 +51,7 @@ extension EventsController {
                 $0.filter(\.isActive == true)
                 $0.filter(\.startDate >= today)
             }
-            .sort(\.date, .ascending)
+            .sort(\.startDate, .ascending)
             .first()
             .unwrap(or: Abort(.notFound))
     }
