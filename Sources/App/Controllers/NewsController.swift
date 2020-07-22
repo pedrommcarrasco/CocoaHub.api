@@ -46,7 +46,7 @@ extension NewsController {
     func latestNews(_ req: Request) throws -> Future<[New]> {
         return New.query(on: req)
             .sort(\.date, .descending)
-            .limit(3, offset: 0)
+            .range(..<3)
             .unwrap(or: Abort(.notFound))
     }
 }
