@@ -47,7 +47,6 @@ extension NewsController {
         return New.query(on: req)
             .sort(\.date, .descending)
             .range(..<3)
-            .unwrap(or: Abort(.notFound))
     }
 }
 
