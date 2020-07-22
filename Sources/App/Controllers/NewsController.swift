@@ -16,7 +16,7 @@ struct NewsController: RouteCollection {
     func boot(router: Router) throws {
         let routes = router.grouped("news")
         routes.get(use: news)
-        routes.get(New.parameter, use: new)
+        routes.get("latest", use: latestNews)
         
         routes.group(SecretMiddleware.self) {
             $0.post(NewInput.self, use: createNew)
@@ -41,6 +41,13 @@ extension NewsController {
     
     func new(_ req: Request) throws -> Future<New> {
         return try req.parameters.next(New.self)
+    }
+    
+    func latestNews(_ req: Request) throws -> Future<[New]> {
+        return New.query(on: req)
+            .sort(\.date, .descending)
+            .limit(3, offset: 0)
+            .unwrap(or: Abort(.notFound))
     }
 }
 
