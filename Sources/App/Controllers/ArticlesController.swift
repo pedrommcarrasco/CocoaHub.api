@@ -16,6 +16,7 @@ struct ArticlesController: RouteCollection {
     func boot(router: Router) throws {
         let editionsRoutes = router.grouped("editions")
         editionsRoutes.get(use: editions)
+        editionsRoutes.get("latest", use: latestEdition)
         
         editionsRoutes.get(ArticlesEdition.parameter, "articles", use: articles)
         editionsRoutes.group(SecretMiddleware.self) {
@@ -44,6 +45,14 @@ extension ArticlesController {
         return try ArticlesEdition.query(on: req)
             .filter(\.date <= today)
             .paginate(for: req)
+    }
+
+    func latestEdition(_ req: Request) throws -> Future<ArticlesEdition> {
+        let today = Date()
+        return Event.query(on: req)
+            .sort(\.date, .descending)
+            .first()
+            .unwrap(or: Abort(.notFound))
     }
     
     func articles(_ req: Request) throws -> Future<EditionDetailsOutput> {
