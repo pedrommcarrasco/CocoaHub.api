@@ -49,7 +49,7 @@ extension ArticlesController {
 
     func latestEdition(_ req: Request) throws -> Future<ArticlesEdition> {
         let today = Date()
-        return Event.query(on: req)
+        return ArticlesEdition.query(on: req)
             .sort(\.date, .descending)
             .first()
             .unwrap(or: Abort(.notFound))
