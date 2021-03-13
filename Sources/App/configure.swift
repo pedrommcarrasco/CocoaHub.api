@@ -9,7 +9,7 @@ extension PostgreSQLDatabaseConfig {
     
     private static func makeWithURL() -> PostgreSQLDatabaseConfig? {
         guard let url = Environment.url else { return nil }
-        return PostgreSQLDatabaseConfig(url: url)
+        return PostgreSQLDatabaseConfig(url: url, transport: PostgreSQLConnection.TransportConfig.unverifiedTLS)
     }
     
     private static func makeWithoutURL() -> PostgreSQLDatabaseConfig {
